@@ -1,90 +1,78 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 // import { isToday, format, parseISO, isAfter } from 'date-fns';
 // import ptBR from 'date-fns/locale/pt-BR';
-import { FiClock, FiPower } from 'react-icons/fi';
+import { FiPower } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import logoImg from '../../assets/logo.svg';
+import CurrenciesSection from '../../components/CurrenciesSection';
 // import DayPicker, { DayModifiers } from 'react-day-picker';
 // import 'react-day-picker/lib/style.css';
-
 import { useAuth } from '../../hooks/auth';
+import { Currencies, Finances } from '../../interfaces/IFinances.response';
 import { api } from '../../services/api';
-import * as Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-
 import {
+  Appointment,
   Container,
+  Content,
   Header,
   HeaderContent,
   Profile,
-  Content,
   Schedule,
-  // NextAppointment,
   Section,
-  Appointment,
-  Calendar,
 } from './styles';
 
-import logoImg from '../../assets/logo.svg';
-import { Currencies, Finances } from '../../interfaces/IFinances.response';
-import CurrenciesSection from '../../components/CurrenciesSection';
-
-interface MonthAvailabilityItem {
-  day: number;
-  available: boolean;
-}
-
-const options: Highcharts.Options = {
-  chart: {
-    type: 'line',
-  },
-  title: {
-    text: 'Monthly Average Temperature',
-  },
-  subtitle: {
-    text: 'Source: WorldClimate.com',
-  },
-  xAxis: {
-    categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
-  },
-  yAxis: {
-    title: {
-      text: 'Temperature (°C)',
-    },
-  },
-  plotOptions: {
-    line: {
-      dataLabels: {
-        enabled: true,
-      },
-      enableMouseTracking: false,
-    },
-  },
-  series: [
-    {
-      name: 'Tokyo',
-      type: 'line',
-      data: [7, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-    },
-    {
-      name: 'London',
-      type: 'line',
-      data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
-    },
-  ],
-};
+// const options: Highcharts.Options = {
+//   chart: {
+//     type: 'line',
+//   },
+//   title: {
+//     text: 'Monthly Average Temperature',
+//   },
+//   subtitle: {
+//     text: 'Source: WorldClimate.com',
+//   },
+//   xAxis: {
+//     categories: [
+//       'Jan',
+//       'Feb',
+//       'Mar',
+//       'Apr',
+//       'May',
+//       'Jun',
+//       'Jul',
+//       'Aug',
+//       'Sep',
+//       'Oct',
+//       'Nov',
+//       'Dec',
+//     ],
+//   },
+//   yAxis: {
+//     title: {
+//       text: 'Temperature (°C)',
+//     },
+//   },
+//   plotOptions: {
+//     line: {
+//       dataLabels: {
+//         enabled: true,
+//       },
+//       enableMouseTracking: false,
+//     },
+//   },
+//   series: [
+//     {
+//       name: 'Tokyo',
+//       type: 'line',
+//       data: [7, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+//     },
+//     {
+//       name: 'London',
+//       type: 'line',
+//       data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
+//     },
+//   ],
+// };
 
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
