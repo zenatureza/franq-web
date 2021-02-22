@@ -8,6 +8,8 @@ import { FiClock, FiPower } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 import { api } from '../../services/api';
+import * as Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 import {
   Container,
@@ -16,7 +18,7 @@ import {
   Profile,
   Content,
   Schedule,
-  NextAppointment,
+  // NextAppointment,
   Section,
   Appointment,
   Calendar,
@@ -78,149 +80,120 @@ interface Finances {
   from_cache: boolean;
 }
 
+const options: Highcharts.Options = {
+  chart: {
+    type: 'line',
+  },
+  title: {
+    text: 'Monthly Average Temperature',
+  },
+  subtitle: {
+    text: 'Source: WorldClimate.com',
+  },
+  xAxis: {
+    categories: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ],
+  },
+  yAxis: {
+    title: {
+      text: 'Temperature (°C)',
+    },
+  },
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+      },
+      enableMouseTracking: false,
+    },
+  },
+  series: [
+    {
+      name: 'Tokyo',
+      type: 'line',
+      data: [7, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+    },
+    {
+      name: 'London',
+      type: 'line',
+      data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
+    },
+  ],
+};
+
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
 
-  // const [selectedDate, setSelectedDate] = useState(new Date());
-  // const [currentMonth, setCurrentMonth] = useState(new Date());
-
-  // const [monthAvailability, setMonthAvailability] = useState<
-  //   MonthAvailabilityItem[]
-  // >([]);
-
-  // const [appointments, setAppointments] = useState<Appointment[]>([]);
-
-  // const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
-  //   if (modifiers.available && !modifiers.disabled) {
-  //     setSelectedDate(day);
-  //   }
-  // }, []);
-
-  // const handleMonthChange = useCallback((month: Date) => {
-  //   setCurrentMonth(month);
-  // }, []);
-
-  // useEffect(() => {
-  //   api
-  //     .get(`/providers/${user.id}/month-availability`, {
-  //       params: {
-  //         year: currentMonth.getFullYear(),
-  //         month: currentMonth.getMonth() + 1,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setMonthAvailability(response.data);
-  //     });
-  // }, [currentMonth, user.id]);
-
   useEffect(() => {
-    api
-      .get<Finances[]>(
-        '/'
-        // {
-        //   params: {
-        //     year: selectedDate.getFullYear(),
-        //     month: selectedDate.getMonth() + 1,
-        //     day: selectedDate.getDate(),
-        //   },
-        // }
-      )
-      .then((response) => {
-        console.log(response.data);
-        // const appointmentsFormatted = response.data.map((appointment) => ({
-        //   ...appointment,
-        //   hourFormatted: format(parseISO(appointment.date), 'HH:mm'),
-        // }));
-
-        // setAppointments(appointmentsFormatted);
-      });
+    api.get<Finances[]>('/').then((response) => {
+      console.log(response.data);
+    });
   }, []);
-
-  // const disabledDays = useMemo(() => {
-  //   const dates = monthAvailability
-  //     .filter((monthDay) => monthDay.available === false)
-  //     .map((monthDay) => {
-  //       const year = currentMonth.getFullYear();
-  //       const month = currentMonth.getMonth();
-
-  //       return new Date(year, month, monthDay.day);
-  //     });
-
-  //   return dates;
-  // }, [currentMonth, monthAvailability]);
-
-  // const selectedDateAsText = useMemo(() => {
-  //   return format(selectedDate, "'Dia' dd 'de' MMMM", {
-  //     locale: ptBR,
-  //   });
-  // }, [selectedDate]);
-
-  // const selectedWeekDay = useMemo(() => {
-  //   return format(selectedDate, 'cccc', {
-  //     locale: ptBR,
-  //   });
-  // }, [selectedDate]);
-
-  // const morningAppointments = useMemo(() => {
-  //   return appointments.filter((appointment) => {
-  //     return parseISO(appointment.date).getHours() < 12;
-  //   });
-  // }, [appointments]);
-
-  // const afternoonAppointments = useMemo(() => {
-  //   return appointments.filter((appointment) => {
-  //     return parseISO(appointment.date).getHours() >= 12;
-  //   });
-  // }, [appointments]);
-
-  // const nextAppointment = useMemo(() => {
-  //   return appointments.find((appointment) =>
-  //     isAfter(parseISO(appointment.date), new Date())
-  //   );
-  // }, [appointments]);
 
   return (
     <Container>
       <Header>
         <HeaderContent>
-          <img src={logoImg} alt="FranqApp" width={120} />
+          <img src={logoImg} alt="FranqApp" />
 
           <Profile>
             {/* <img src={user.avatar_url} alt={user.name} /> */}
             <div>
-              <span>Bem vindo,</span>
+              <span>Bem vindo ao FranqApp,</span>
               <Link to="/profile">
                 <strong>{user.name}</strong>
               </Link>
             </div>
           </Profile>
 
-          <button type="button" onClick={signOut}>
+          <button type="button" onClick={signOut} title="Sair">
             <FiPower />
           </button>
         </HeaderContent>
       </Header>
+
+      <Content>
+        <Schedule>
+          <Section>
+            <strong>COTAÇÃO DAS PRINCIPAIS MOEDAS PARA O REAL</strong>
+
+            <Appointment key={''}>
+              <strong>USD DÓLAR / BRL REAL</strong>
+              <div>
+                <strong>{'R$ 5,39'}</strong>
+                <span>-1,022 %</span>
+              </div>
+            </Appointment>
+          </Section>
+
+          <Section>
+            <strong>COTAÇÃO DO BITCOIN NAS PRINCIPAIS CORRETORAS</strong>
+
+            <Appointment key={''}>
+              <span>COINBASE / USD DÓLARL</span>
+              <div>
+                <strong>{'R$ 5,39 | '}</strong>
+                <span>-1,022 %</span>
+              </div>
+            </Appointment>
+          </Section>
+        </Schedule>
+      </Content>
+      {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
     </Container>
     // <Container>
-    //   <Header>
-    //     <HeaderContent>
-    //       <img src={logoImg} alt="FranqApp" />
-
-    //       <Profile>
-    //         <img src={user.avatar_url} alt={user.name} />
-    //         <div>
-    //           <span>Bem vindo,</span>
-    //           <Link to="/profile">
-    //             <strong>{user.name}</strong>
-    //           </Link>
-    //         </div>
-    //       </Profile>
-
-    //       <button type="button" onClick={signOut}>
-    //         <FiPower />
-    //       </button>
-    //     </HeaderContent>
-    //   </Header>
 
     //   <Content>
     //     <Schedule>

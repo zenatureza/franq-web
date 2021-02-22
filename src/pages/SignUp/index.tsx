@@ -5,7 +5,7 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
-import { authApi } from '../../services/api';
+import { api } from '../../services/api';
 
 import { useToast } from '../../hooks/toast';
 
@@ -46,14 +46,14 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        await authApi.post('/users', data);
+        await api.post('/users', data);
 
         history.push('/');
 
         addToast({
           type: 'success',
           title: 'Cadastro realizado!',
-          description: 'Você já pode fazer seu logon no FranqApp!',
+          description: 'Você já pode fazer seu login no FranqApp!',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
