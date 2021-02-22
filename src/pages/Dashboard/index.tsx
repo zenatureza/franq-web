@@ -25,59 +25,12 @@ import {
 } from './styles';
 
 import logoImg from '../../assets/logo.svg';
+import { Currencies, Finances } from '../../interfaces/IFinances.response';
+import CurrenciesSection from '../../components/CurrenciesSection';
 
 interface MonthAvailabilityItem {
   day: number;
   available: boolean;
-}
-
-interface Currency {
-  name: string;
-  buy: number;
-  sell: number;
-  variation: number;
-}
-
-interface Currencies {
-  source: string;
-  USD: Currency;
-  EUR: Currency;
-  GBP: Currency;
-  ARS: Currency;
-  CAD: Currency;
-  AUD: Currency;
-  JPY: Currency;
-  CNY: Currency;
-  BTC: Currency;
-}
-
-interface Stock {
-  name: string;
-  location: string;
-  points: number;
-  variation: number;
-}
-
-interface Stocks {
-  IBOVESPA: Stock;
-  NASDAQ: Stock;
-  CAC: Stock;
-  NIKKEI: Stock;
-}
-
-interface Results {
-  currencies: Currencies;
-  stocks: Stocks;
-  available_sources: string[];
-  taxes: number[];
-}
-
-interface Finances {
-  by: string;
-  valid_key: boolean;
-  results: Results;
-  execution_time: number;
-  from_cache: boolean;
 }
 
 const options: Highcharts.Options = {
@@ -136,9 +89,14 @@ const options: Highcharts.Options = {
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
 
+  const [currenciesResult, setCurrencies] = useState<Currencies>();
+
   useEffect(() => {
-    api.get<Finances[]>('/').then((response) => {
-      console.log(response.data);
+    api.get<Finances>('/hgfinance').then((response) => {
+      const { results } = response.data;
+      const { currencies } = results;
+
+      setCurrencies(currencies);
     });
   }, []);
 
@@ -168,14 +126,7 @@ const Dashboard: React.FC = () => {
         <Schedule>
           <Section>
             <strong>COTAÇÃO DAS PRINCIPAIS MOEDAS PARA O REAL</strong>
-
-            <Appointment key={''}>
-              <strong>USD DÓLAR / BRL REAL</strong>
-              <div>
-                <strong>{'R$ 5,39'}</strong>
-                <span>-1,022 %</span>
-              </div>
-            </Appointment>
+            <CurrenciesSection currencies={currenciesResult} />
           </Section>
 
           <Section>
@@ -193,117 +144,6 @@ const Dashboard: React.FC = () => {
       </Content>
       {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
     </Container>
-    // <Container>
-
-    //   <Content>
-    //     <Schedule>
-    //       <h1>Horários agendados</h1>
-    //       <p>
-    //         {isToday(selectedDate) && <span>Hoje</span>}
-    //         <span>{selectedDateAsText}</span>
-    //         <span>{selectedWeekDay}</span>
-    //       </p>
-
-    //       {isToday(selectedDate) && nextAppointment && (
-    //         <NextAppointment>
-    //           <strong>Agendamento a seguir</strong>
-    //           <div>
-    //             <img
-    //               src={nextAppointment.user.avatar_url}
-    //               alt={nextAppointment.user.name}
-    //             />
-
-    //             <strong>{nextAppointment.user.name}</strong>
-    //             <span>
-    //               <FiClock />
-    //               {nextAppointment.hourFormatted}
-    //             </span>
-    //           </div>
-    //         </NextAppointment>
-    //       )}
-
-    //       <Section>
-    //         <strong>Manhã</strong>
-
-    //         {morningAppointments.length === 0 && (
-    //           <p>Nenhum agendamento neste período</p>
-    //         )}
-
-    //         {morningAppointments.map((appointment) => (
-    //           <Appointment key={appointment.id}>
-    //             <span>
-    //               <FiClock />
-    //               {appointment.hourFormatted}
-    //             </span>
-
-    //             <div>
-    //               <img
-    //                 src={appointment.user.avatar_url}
-    //                 alt={appointment.user.name}
-    //               />
-
-    //               <strong>{appointment.user.name}</strong>
-    //             </div>
-    //           </Appointment>
-    //         ))}
-    //       </Section>
-
-    //       <Section>
-    //         <strong>Tarde</strong>
-
-    //         {afternoonAppointments.length === 0 && (
-    //           <p>Nenhum agendamento neste período</p>
-    //         )}
-
-    //         {afternoonAppointments.map((appointment) => (
-    //           <Appointment key={appointment.id}>
-    //             <span>
-    //               <FiClock />
-    //               {appointment.hourFormatted}
-    //             </span>
-
-    //             <div>
-    //               <img
-    //                 src={appointment.user.avatar_url}
-    //                 alt={appointment.user.name}
-    //               />
-
-    //               <strong>{appointment.user.name}</strong>
-    //             </div>
-    //           </Appointment>
-    //         ))}
-    //       </Section>
-    //     </Schedule>
-
-    //     <Calendar>
-    //       <DayPicker
-    //         weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
-    //         fromMonth={new Date()}
-    //         disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
-    //         modifiers={{
-    //           available: { daysOfWeek: [1, 2, 3, 4, 5] },
-    //         }}
-    //         onMonthChange={handleMonthChange}
-    //         selectedDays={selectedDate}
-    //         onDayClick={handleDateChange}
-    //         months={[
-    //           'Janeiro',
-    //           'Fevereiro',
-    //           'Março',
-    //           'Abril',
-    //           'Maio',
-    //           'Junho',
-    //           'Julho',
-    //           'Agosto',
-    //           'Setembro',
-    //           'Outubro',
-    //           'Novembro',
-    //           'Dezembro',
-    //         ]}
-    //       />
-    //     </Calendar>
-    //   </Content>
-    // </Container>
   );
 };
 export default Dashboard;
