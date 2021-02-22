@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Currencies, getCurrency } from '../../interfaces/IFinances.response';
 import getBrlValue from '../../utils/getBrlValue';
 
@@ -9,17 +10,21 @@ interface Props {
 }
 
 const CurrenciesSection: React.FC<Props> = ({ currencies }: Props) => {
-  // TODO: Adicionar comportamento para renderizar um gráfico ao clicar aqui
+  const history = useHistory();
 
   return (
-    <>
+    <div>
       {!currencies && <p>Nenhuma cotação de moeda obtida</p>}
 
       {currencies &&
         Object.keys(currencies)
           .filter((key) => key !== 'source')
           .map((currencyKey) => (
-            <Currency key={currencyKey}>
+            <Currency
+              title={`Ver evolução de preços`}
+              onClick={() => history.push(`/currencydetails/${currencyKey}`)}
+              key={currencyKey}
+            >
               <strong>{`${currencies['source']} / ${
                 getCurrency(currencies[currencyKey]).name
               }`}</strong>
@@ -35,7 +40,7 @@ const CurrenciesSection: React.FC<Props> = ({ currencies }: Props) => {
               </div>
             </Currency>
           ))}
-    </>
+    </div>
   );
 };
 

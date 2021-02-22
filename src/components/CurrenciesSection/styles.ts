@@ -9,6 +9,7 @@ export const Currency = styled.div`
   display: flex;
   align-items: center;
   background: #3e3b47;
+  cursor: pointer;
 
   & + div {
     margin-top: 16px;

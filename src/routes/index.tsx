@@ -7,6 +7,7 @@ import Route from './Route';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
 import Dashboard from '../pages/Dashboard';
+import CurrencyDetails from '../pages/CurrencyDetails';
 // import ForgotPassword from '../pages/ForgotPassword';
 // import ResetPassword from '../pages/ResetPassword';
 
@@ -18,11 +19,13 @@ const Routes: React.FC = () => {
     <Switch>
       <Route path="/" exact component={SignIn} />
       <Route path="/signup" component={SignUp} />
-      {/* <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/reset-password" component={ResetPassword} /> */}
 
-      {/* <Route path="/profile" component={Dashboard} isPrivate /> */}
       <Route path="/dashboard" component={Dashboard} isPrivate />
+      <Route
+        path="/currencydetails/:currency"
+        component={CurrencyDetails}
+        isPrivate
+      />
     </Switch>
   );
 };
