@@ -38,7 +38,7 @@ const Dashboard: React.FC = () => {
     setLoadingStocks(true);
 
     api
-      .get<Finances>('/hgfinances')
+      .get<Finances>('/hgfinance')
       .then((response) => {
         setState(response);
       })
