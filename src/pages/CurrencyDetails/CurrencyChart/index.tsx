@@ -14,8 +14,6 @@ interface Props {
 }
 
 const CurrencyChart: React.FC<Props> = ({ currency }: Props) => {
-  // const chart = React.createRef<Highcharts.Chart>();
-
   const [chartOptions, setChartOptions] = useState<Highcharts.Options>({
     chart: {
       type: 'line',
@@ -96,6 +94,19 @@ const CurrencyChart: React.FC<Props> = ({ currency }: Props) => {
       const categories = data.map((x) => x.date).reverse();
 
       setChartOptions({
+        chart: {
+          type: 'line',
+          backgroundColor: colors.main,
+        },
+        title: {
+          text: `Evolução de preços: ${currency}`,
+          style: {
+            color: '#fff',
+          },
+        },
+        credits: {
+          enabled: false,
+        },
         series: [
           {
             name: 'Compra',
@@ -114,6 +125,26 @@ const CurrencyChart: React.FC<Props> = ({ currency }: Props) => {
         ],
         xAxis: {
           categories,
+          labels: {
+            style: {
+              color: '#fff',
+            },
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Preço (R$)',
+            style: {
+              color: '#fff',
+            },
+          },
+          labels: {
+            style: {
+              color: '#fff',
+            },
+            // tick: 0.05,
+          },
+          crosshair: true,
         },
       });
 
