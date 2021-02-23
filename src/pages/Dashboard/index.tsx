@@ -5,7 +5,7 @@ import {
   Finances,
   Stocks,
 } from '../../interfaces/IFinances.response';
-import { api, tryAgainApi } from '../../services/api';
+import { api, recoverApi } from '../../services/api';
 import DefaultLayout from '../_layouts/default';
 import { Content } from '../_layouts/default/styles';
 import { Container, Section } from './styles';
@@ -43,7 +43,7 @@ const Dashboard: React.FC = () => {
         setState(response);
       })
       .catch(() => {
-        tryAgainApi.get<Finances>('/').then((response) => {
+        recoverApi.get<Finances>('/').then((response) => {
           setState(response);
         });
       });
