@@ -12,6 +12,11 @@ export const Container = styled.div`
   flex-wrap: wrap;
   width: 100%;
 
+  p {
+    display: flex;
+    font-size: 0.8em;
+  }
+
   > a {
     color: ${colors.secondary};
     display: block;

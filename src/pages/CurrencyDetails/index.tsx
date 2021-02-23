@@ -16,6 +16,7 @@ const CurrencyDetails: React.FC = () => {
     <DefaultLayout>
       <CurrencyChart currency={currency} />
       <Container>
+        <p>Dados providos por: economia.awesomeapi.com.br</p>
         <Link to="/dashboard">
           <FiArrowLeftCircle />
           Voltar ao dashboard

@@ -86,6 +86,8 @@ const Dashboard: React.FC = () => {
               )}
             </Section>
           </div>
+
+          <p>Dados providos por: api.hgbrasil.com/finance</p>
         </Content>
       </Container>
     </DefaultLayout>

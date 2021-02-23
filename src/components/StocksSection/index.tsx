@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useToast } from '../../hooks/toast';
 import { getStock, Stocks } from '../../interfaces/IFinances.response';
 import getFormattedVariation from '../../utils/getFormattedVariation';
 import { Container, Currency, Variation } from './styles';
@@ -10,6 +11,7 @@ interface Props {
 
 const StocksSection: React.FC<Props> = ({ stocks }: Props) => {
   const history = useHistory();
+  const { addToast } = useToast();
 
   return (
     <Container>
@@ -26,7 +28,13 @@ const StocksSection: React.FC<Props> = ({ stocks }: Props) => {
                   : 'Preços indisponíveis'
               }
               onClick={() => {
-                if (stockKey !== 'CAC') return;
+                if (stockKey !== 'CAC') {
+                  return addToast({
+                    type: 'info',
+                    title: 'Índice indisponível',
+                    description: 'Este índice não está disponível no provedor.',
+                  });
+                }
 
                 return history.push(`/stockdetails/${stockKey}`);
               }}

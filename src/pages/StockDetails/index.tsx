@@ -16,6 +16,7 @@ const StockDetails: React.FC = () => {
     <DefaultLayout>
       <StockChart stock={stock} />
       <Container>
+        <p>Dados providos por: finance.yahoo.com/quote/</p>
         <Link to="/dashboard">
           <FiArrowLeftCircle />
           Voltar ao dashboard
