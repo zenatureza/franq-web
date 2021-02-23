@@ -59,4 +59,7 @@ export const Content = styled.main`
   margin: 1em auto;
   display: flex;
   flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
 `;

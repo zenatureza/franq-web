@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CurrenciesSection from '../../components/CurrenciesSection';
 import {
   Currencies,
   Finances,
   Stocks,
 } from '../../interfaces/IFinances.response';
-import { api } from '../../services/api';
+import { api, tryAgainApi } from '../../services/api';
 import DefaultLayout from '../_layouts/default';
 import { Content } from '../_layouts/default/styles';
 import { Container, Section } from './styles';
@@ -20,23 +20,34 @@ const Dashboard: React.FC = () => {
   const [loadingCurrencies, setLoadingCurrencies] = useState(false);
   const [loadingStocks, setLoadingStocks] = useState(false);
 
+  const setState = useCallback((response) => {
+    const { results } = response.data;
+    const { currencies, stocks } = results;
+
+    setCurrencies(currencies);
+    setStocks(stocks);
+
+    setTimeout(() => {
+      setLoadingCurrencies(false);
+      setLoadingStocks(false);
+    }, 1000);
+  }, []);
+
   useEffect(() => {
     setLoadingCurrencies(true);
     setLoadingStocks(true);
 
-    api.get<Finances>('/hgfinance').then((response) => {
-      const { results } = response.data;
-      const { currencies, stocks } = results;
-
-      setCurrencies(currencies);
-      setStocks(stocks);
-
-      setTimeout(() => {
-        setLoadingCurrencies(false);
-        setLoadingStocks(false);
-      }, 1000);
-    });
-  }, []);
+    api
+      .get<Finances>('/hgfinances')
+      .then((response) => {
+        setState(response);
+      })
+      .catch(() => {
+        tryAgainApi.get<Finances>('/').then((response) => {
+          setState(response);
+        });
+      });
+  }, [setState]);
 
   return (
     <DefaultLayout>
