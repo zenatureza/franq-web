@@ -15,9 +15,10 @@ export const Container = styled.div`
   > a {
     color: ${colors.secondary};
     display: block;
-    margin-top: 1px;
+    margin-top: 1em;
     text-decoration: none;
     transition: color 0.2s;
+    font-size: 1.2em;
 
     display: flex;
     align-items: center;
