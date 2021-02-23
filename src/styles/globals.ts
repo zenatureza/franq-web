@@ -23,4 +23,9 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  .flex-center {
+    display: flex;
+    justify-content: center;
+  }
 `;

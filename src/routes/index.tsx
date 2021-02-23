@@ -3,16 +3,11 @@ import { Switch } from 'react-router-dom';
 
 import Route from './Route';
 
-// import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
 import Dashboard from '../pages/Dashboard';
 import CurrencyDetails from '../pages/CurrencyDetails';
-// import ForgotPassword from '../pages/ForgotPassword';
-// import ResetPassword from '../pages/ResetPassword';
-
-// import Profile from '../pages/Profile';
-// import Dashboard from '../pages/Dashboard';
+import StockDetails from '../pages/StockDetails';
 
 const Routes: React.FC = () => {
   return (
@@ -26,6 +21,7 @@ const Routes: React.FC = () => {
         component={CurrencyDetails}
         isPrivate
       />
+      <Route path="/stockdetails/:stock" component={StockDetails} isPrivate />
     </Switch>
   );
 };

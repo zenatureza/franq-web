@@ -2,8 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Currencies, getCurrency } from '../../interfaces/IFinances.response';
 import getBrlValue from '../../utils/getBrlValue';
+import getFormattedVariation from '../../utils/getFormattedVariation';
 
-import { Currency, Variation } from './styles';
+import { Container, Currency, Variation } from './styles';
 
 interface Props {
   currencies: Currencies | undefined;
@@ -13,7 +14,7 @@ const CurrenciesSection: React.FC<Props> = ({ currencies }: Props) => {
   const history = useHistory();
 
   return (
-    <div>
+    <Container>
       {!currencies && <p>Nenhuma cotação de moeda obtida</p>}
 
       {currencies &&
@@ -25,22 +26,30 @@ const CurrenciesSection: React.FC<Props> = ({ currencies }: Props) => {
               onClick={() => history.push(`/currencydetails/${currencyKey}`)}
               key={currencyKey}
             >
-              <strong>{`${currencies['source']} / ${
-                getCurrency(currencies[currencyKey]).name
-              }`}</strong>
               <div>
-                <strong>
-                  {getBrlValue(getCurrency(currencies[currencyKey]).buy)}
-                </strong>
+                <p>
+                  {`${currencies['source']} / ${
+                    getCurrency(currencies[currencyKey]).name
+                  }`}
+                </p>
+              </div>
+
+              <div>
+                <h2>{getBrlValue(getCurrency(currencies[currencyKey]).buy)}</h2>
+              </div>
+
+              <div>
                 <Variation
                   variation={getCurrency(currencies[currencyKey]).variation}
                 >
-                  {getBrlValue(getCurrency(currencies[currencyKey]).variation)}
+                  {getFormattedVariation(
+                    getCurrency(currencies[currencyKey]).variation
+                  )}
                 </Variation>
               </div>
             </Currency>
           ))}
-    </div>
+    </Container>
   );
 };
 

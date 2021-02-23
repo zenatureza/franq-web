@@ -61,7 +61,7 @@ const Input: React.FC<InputProps> = ({
         defaultValue={defaultValue}
         ref={inputRef}
         {...rest}
-        type="text"
+        type={rest.type ?? 'text'}
       />
       {error && (
         <Error title={error}>

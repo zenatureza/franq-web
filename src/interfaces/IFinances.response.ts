@@ -50,6 +50,11 @@ export function getCurrency(currencyData: Currency | string): Currency {
   return currency;
 }
 
+export function getStock(stockData: Stock | string): Stock {
+  const stock = stockData as Stock;
+  return stock;
+}
+
 export interface Results {
   currencies: Currencies;
   stocks: Stocks;

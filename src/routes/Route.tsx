@@ -1,12 +1,10 @@
 import React from 'react';
 import {
+  Redirect,
   Route as ReactDOMRoute,
   RouteProps as ReactDOMRouteProps,
-  Redirect,
 } from 'react-router-dom';
-
 import { useAuth } from '../hooks/auth';
-import DefaultLayout from '../pages/_layouts/default';
 
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
@@ -25,9 +23,7 @@ const Route: React.FC<RouteProps> = ({
       {...rest}
       render={({ location }) => {
         return isPrivate === !!user ? (
-          <DefaultLayout>
-            <Component />
-          </DefaultLayout>
+          <Component />
         ) : (
           <Redirect
             to={{
