@@ -22,6 +22,9 @@ git clone https://github.com/zenatureza/franq-web
 # Acessa o diretório
 cd franq-web
 
+# Gera .env
+cp .env.example .env
+
 # Instala os pacotes necessários
 yarn install
 ```
