@@ -87,8 +87,10 @@ const StockChart: React.FC<Props> = ({ stock }: Props) => {
     api
       .get<Stock[]>(`/stocks/${stock}`, {
         params: {
-          startDate: '2021-01=01',
-          endDate: '2021-02-22',
+          // startDate: subDays(new Date(), 15).toJSON().slice(0, 10).toString(),
+          endDate: new Date().toJSON().slice(0, 10).toString(),
+          startDate: '2021-01-01',
+          // endDate: '2021-02-22',
         },
       })
       .then((response) => {

@@ -5,13 +5,13 @@ import {
   Finances,
   Stocks,
 } from '../../interfaces/IFinances.response';
-import { api, recoverApi } from '../../services/api';
 import DefaultLayout from '../_layouts/default';
 import { Content } from '../_layouts/default/styles';
 import { Container, Section } from './styles';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import StocksSection from '../../components/StocksSection';
+import { api } from '../../services/api';
 
 const Dashboard: React.FC = () => {
   const [currenciesResult, setCurrencies] = useState<Currencies>();
@@ -43,9 +43,9 @@ const Dashboard: React.FC = () => {
         setState(response);
       })
       .catch(() => {
-        recoverApi.get<Finances>('/').then((response) => {
-          setState(response);
-        });
+        // recoverApi.get<Finances>('/').then((response) => {
+        //   setState(response);
+        // });
       });
   }, [setState]);
 
