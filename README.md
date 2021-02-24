@@ -6,6 +6,7 @@ Disponível em:
 - https://infallible-tesla-6a3d96.netlify.app/
 - https://franq-app.zenatureza.com/
 
+Obs.: Na primeira vez que rodar a aplicação as ações do sistema, como criar usuário ou realizar login, serão lentas, pois por a api estar hospedada no heorku, o servidor demora um tempo para sair do modo sleep. Após isso fica rápido.
 
 ## Rodando a aplicação
 
