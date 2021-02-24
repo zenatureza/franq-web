@@ -1,22 +1,26 @@
-import React, { useCallback, useRef } from 'react';
-import { FiArrowLeft, FiUser, FiMail, FiLock } from 'react-icons/fi';
-import { FormHandles } from '@unform/core';
-import { Form } from '@unform/web';
-import * as Yup from 'yup';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useCallback, useRef, useState } from "react";
+import { FiArrowLeft, FiUser, FiMail, FiLock } from "react-icons/fi";
+import { FormHandles } from "@unform/core";
+import { Form } from "@unform/web";
+import * as Yup from "yup";
+import { Link, useHistory } from "react-router-dom";
 
-import { api } from '../../services/api';
+import { api } from "../../services/api";
 
-import { useToast } from '../../hooks/toast';
+import { useToast } from "../../hooks/toast";
 
-import getValidationErrors from '../../utils/getValidationErrors';
+import getValidationErrors from "../../utils/getValidationErrors";
 
-import logoImg from '../../assets/logo.svg';
+import logoImg from "../../assets/logo.svg";
 
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
-import { Container, Content, AnimationContainer, Background } from './styles';
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
+import { Container, Content, AnimationContainer, Background } from "./styles";
+import colors from "../../styles/colors";
 
 interface SignUpFormData {
   name: string;
@@ -29,31 +33,34 @@ const SignUp: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = useCallback(
     async (data: SignUpFormData) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome obrigatório'),
+          name: Yup.string().required("Nome obrigatório"),
           email: Yup.string()
-            .email('Digite um e-mail válido')
-            .required('E-mail obrigatório'),
-          password: Yup.string().min(6, 'No mínimo 6 dígitos'),
+            .email("Digite um e-mail válido")
+            .required("E-mail obrigatório"),
+          password: Yup.string().min(6, "No mínimo 6 dígitos"),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        setLoading(true);
+        await api.post("/users", data);
 
-        history.push('/');
+        history.push("/");
 
         addToast({
-          type: 'success',
-          title: 'Cadastro realizado!',
-          description: 'Você já pode fazer seu login no FranqApp!',
+          type: "success",
+          title: "Cadastro realizado!",
+          description: "Você já pode fazer seu login no FranqApp!",
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -65,11 +72,13 @@ const SignUp: React.FC = () => {
         }
 
         addToast({
-          type: 'error',
-          title: 'Erro no cadastro',
-          description: 'Ocorreu um erro ao fazer cadastro, tente novamente.',
+          type: "error",
+          title: "Erro no cadastro",
+          description: "Ocorreu um erro ao fazer cadastro, tente novamente.",
         });
       }
+
+      setLoading(false);
     },
     [addToast, history]
   );
@@ -95,7 +104,19 @@ const SignUp: React.FC = () => {
               placeholder="Senha"
             />
 
-            <Button type="submit">Cadastrar</Button>
+            {/* <Button type="submit">Cadastrar</Button> */}
+            {loading ? (
+              <div className="flex-center">
+                <Loader
+                  type="RevolvingDot"
+                  color={colors.secondary}
+                  height={100}
+                  width={100}
+                />
+              </div>
+            ) : (
+              <Button type="submit">Cadastrar</Button>
+            )}
           </Form>
 
           <Link to="/">
