@@ -3,8 +3,9 @@
 Aplicação que permite visualização de dados financeiros como cotação de moedas e ações. Além disso é possível visualizar uma evolução de preços destes itens através de gráficos.
 Disponível em:
 
-- https://franq-app.zenatureza.com/
 - https://infallible-tesla-6a3d96.netlify.app/
+- https://franq-app.zenatureza.com/
+
 
 ## Rodando a aplicação
 
